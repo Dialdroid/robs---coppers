@@ -216,7 +216,20 @@ public class Controller : MonoBehaviour
         - Movemos al caco a esa casilla
         - Actualizamos la variable currentTile del caco a la nueva casilla
         */
-        robber.GetComponent<RobberMove>().MoveToTile(tiles[robber.GetComponent<RobberMove>().currentTile]);
+        List<Tile> lista = new List<Tile>();
+        for (int i = 0; i < Constants.NumTiles; i++)
+        {
+            if (tiles[i].selectable && tiles[i].numTile != cops[0].GetComponent<CopMove>().currentTile && tiles[i].numTile != cops[1].GetComponent<CopMove>().currentTile && tiles[i].numTile != clickedTile)
+            {
+                //si no es un policía ni si mismo, agregar a la lista
+                lista.Add(tiles[i]);
+
+            }
+        }
+        Tile random = lista[Random.Range(0, lista.Count)];
+        robber.GetComponent<RobberMove>().MoveToTile(random);
+        robber.GetComponent<RobberMove>().currentTile = random.numTile;//actualiza la posición
+
     }
 
     public void EndGame(bool end)
@@ -284,6 +297,7 @@ public class Controller : MonoBehaviour
         {
             if (tiles[c].numTile != cops[0].GetComponent<CopMove>().currentTile && tiles[c].numTile != cops[1].GetComponent<CopMove>().currentTile)
             {
+                //PARA EVITAR METERME EN LA CASILLA DONDE HAY UN POLÍCIA (ROB) NI SUS ADYANCENTES
                 nodes.Enqueue(tiles[c]);
                 tiles[c].selectable = true;
 
