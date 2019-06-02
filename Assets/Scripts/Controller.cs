@@ -70,6 +70,14 @@ public class Controller : MonoBehaviour
 
         //TODO: Inicializar matriz a 0's
 
+        for (int c = 0; c < Constants.NumTiles; c++)
+        {
+            for (int f = 0; f < Constants.NumTiles; f++)
+            {
+                matriu[c, f] = 0;
+            }
+        }
+
         //TODO: Para cada posición, rellenar con 1's las casillas adyacentes (arriba, abajo, izquierda y derecha)
 
 
@@ -87,12 +95,12 @@ public class Controller : MonoBehaviour
                 matriu[i, top] = 1;
             }
 
-            if (matriu[i, 1] % 8 == 7)
+            if (i % 8 == 7)
             {
-                matriu[i, i + 1] = 1;
+                matriu[i, i - 1] = 1;
 
             }
-            else if (matriu[i, 1] % 8 == 0)
+            else if (i % 8 == 0)
             {
                 matriu[i, i + 1] = 1;
             }
@@ -101,8 +109,24 @@ public class Controller : MonoBehaviour
                 matriu[i, i + 1] = 1;
                 matriu[i, i - 1] = 1;
             }
-            //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
 
+        }
+        //TODO: Rellenar la lista "adjacency" de cada casilla con los índices de sus casillas adyacentes
+        for (int f = 0; f < Constants.NumTiles; f++)
+        {
+            for (int c = 0; c < Constants.NumTiles; c++)
+            {
+                if (matriu[f, c] == 1)
+                    tiles[f].adjacency.Add(tiles[c].numTile);
+            }
+        }
+
+        for (int f = 0; f < Constants.NumTiles; f++)
+        {
+            for (int c = 0; c < Constants.NumTiles; c++)
+            {
+                Debug.Log("fila" + f + "columna" + c + "valor" + matriu[f,c]);
+            }
         }
     }
 
