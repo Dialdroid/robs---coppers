@@ -121,13 +121,13 @@ public class Controller : MonoBehaviour
             }
         }
 
-        for (int f = 0; f < Constants.NumTiles; f++)
+        /*for (int f = 0; f < Constants.NumTiles; f++)
         {
             for (int c = 0; c < Constants.NumTiles; c++)
             {
                 Debug.Log("fila" + f + "columna" + c + "valor" + matriu[f,c]);
             }
-        }
+        }*/
     }
 
     //Reseteamos cada casilla: color, padre, distancia y visitada
@@ -273,14 +273,31 @@ public class Controller : MonoBehaviour
         //Cola para el BFS
         Queue<Tile> nodes = new Queue<Tile>();
 
+
         //TODO: Implementar BFS. Los nodos seleccionables los ponemos como selectable=true
         //Tendrás que cambiar este código por el BFS
-        for(int i = 0; i < Constants.NumTiles; i++)
+        /*for(int i = 0; i < Constants.NumTiles; i++)
         {
             tiles[i].selectable = true;
+        }*/
+        foreach (int c in tiles[indexcurrentTile].adjacency)
+        {
+            if (tiles[c].numTile != cops[0].GetComponent<CopMove>().currentTile && tiles[c].numTile != cops[1].GetComponent<CopMove>().currentTile)
+            {
+                nodes.Enqueue(tiles[c]);
+                tiles[c].selectable = true;
+
+                foreach (int adj in tiles[c].adjacency)
+                {
+                    if (!nodes.Contains(tiles[adj]) && tiles[adj].numTile != cops[0].GetComponent<CopMove>().currentTile && tiles[adj].numTile != cops[1].GetComponent<CopMove>().currentTile)
+                 //PARA EVITAR METERME EN LA CASILLA DONDE HAY UN POLÍCIA (ROB)
+                        nodes.Enqueue(tiles[adj]);
+                    tiles[adj].selectable = true;
+                }
+
+            }
         }
-
-
+        tiles[indexcurrentTile].selectable = false;
     }
     
    
